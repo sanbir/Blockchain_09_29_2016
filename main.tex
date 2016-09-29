@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Blockchain}
+\author{Alexandr Biryukov}
+\date{September 29, 2016}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{listings}
+
+\begin{document}
+
+\maketitle
+
+\section{Blockchain applications}
+As the blockchain technology gains more attention and even hype, the community is looking for potential applications of it. Some even say, “blockchain is a solution looking for a problem”. But I would disagree with this statement. It has a very well defined problem to solve: “how to prevent a double-spending attack in an electronic payment system without a trusted third party”.
+
+\section{Bitcoin}
+Blockchain was first introduced as a part of Bitcoin specification by Satoshi Nakamoto [Bitcoin: A Peer-to-Peer Electronic Cash System]. It is an append-only distributed database, which can be stored on any computer in the world. It cryptographically ensures consistency and consensus without trust among the nodes.
+
+Bitcoin solved the problem of electronic money transactions without a trusted third party. In that sense, Bitcoin is a peer-to-peer network with a decentralized consensus mechanism. The same word, Bitcoin, also known by a quotation ticker BTC, is used to refer to the currency (token), which is transferred in the transactions.
+
+The main problem that any electronic payment system should solve is the prevention of double-spending. It is solved trivially within a central authority, which determines the time order of the transactions. However, the central authority itself is fundamentally flawed because it:
+
+    \begin{enumerate}
+        \item requires trust;  
+        \item has non-zero downtime;
+        \item can be censored and shut down (which happened to Liberty Reserve in May 2013).
+    \end{enumerate}
+
+Moreover, any centralized payment system provides its users with credit, whereas Bitcoin and other cryptocurrencies are essentially cash, not a promise of it. This makes cryptocurrency transactions irreversible, which makes merchants more confident. Cryptocurrency transactions are orders of magnitude cheaper than traditional ones. In some cryptocurrencies (e.g. Steem) transactions are totally free. It does not matter where the sender and the recipient are geographically located in the world. Transactions are also fast. They take less than 1 hour in Bitcoin (10 minutes for the first confirmation). In modern (July 2016) cryptocurrencies (Ethereum, Lisk, Steem), transactions take less than 15 seconds.
+
+\section{Proof of work}
+Bitcoin's proof of work algorithm is a simple design known as Hashcash, invented by Adam Back in 1995. The hashcash function works as follows:
+
+\begin{lstlisting}[language=Python]
+def hashcash_produce(data, difficulty):
+    nonce = random.randrange(2**256)
+    while sha256(data + str(nonce)) > 2**256 / difficulty:
+    nonce += 1
+    return nonce
+    
+def hashcash_verify(data, nonce, difficulty):
+    return sha256(data + str(nonce)) <= 2**256 / difficulty
+\end{lstlisting}
+
+\section{Real blockchain applications}
+Initially developed as a transaction ledger for a cryptocurrency, blockchain has found usages outside Bitcoin and the financial sector. Since the data in the blocks can be arbitrary, blockchain is now used in many areas where decentralized consensus among anonymous users is needed. For example, for a decentralized domain name system (Namecoin).
+
+\section{Ethereum}
+Although Bitcoin has its scripting language, it is rather limited. For example, it does not allow loops. Ethereum addresses this limitation, being a distributed virtual machine. It provides a Turing-complete contract-oriented language – Solidity. A smart contract is code that can be executed on every machine and provides state transitions depending on conditions (time, input messages), can transfer funds and ownership rights depending on the results of computations. Decentralized applications (known in the community as dapps) represent a set of contracts, which can interact with each other.
+
+\section{Blue Horizon}
+Blue Horizon by IBM is an experimental software system, consisting of many technologies. It is defined as a decentralized autonomous edge compute. It utilizes Ethereum blockchain as a means for discovering buyers and sellers of computational jobs among IoT devices. It also allows them to regulate their deals via smart contracts.
+
+Blue Horizon first discovers Ethereum identity of the nodes. Contracts are public on the blockchain. There is no way to connect Ethereum identity (public key) with Internet identity (IP-address). When already in contract, the parties use the Whisper protocol, which is NOT on the blockchain. https://bluehorizon.network/documentation/whisper 
+
+\section{Notre Dame Stadium seats lease}
+Currently, I am designing a solution for peer-to-peer sales among untrusted parties with limited connectivity. An example of such an environment can be Notre Dame Stadium where people can buy food and stuff, as well as sell or lease their seats for some period of time to interested buyers whom they do not know. So, there should be a decentralized marketplace that could work on a mesh network of mobile devices.
+
+
+\section{Citations}
+\citep{adams1995hitchhiker}
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}
